@@ -1,0 +1,10 @@
+# Eclipse ayar dosyaları (Bunlar GitHub'a gitmemeli)
+.metadata
+bin/
+.classpath
+.project
+.settings/
+
+# Veritabanı (Herkesin SQLite dosyası lokalde kalmalı)
+*.db
+*.sqlite
