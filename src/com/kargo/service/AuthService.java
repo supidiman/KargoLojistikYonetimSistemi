@@ -10,7 +10,7 @@ public class AuthService {
 		
 		public AuthService(IPersonelDAO personeldao)//cosnstructor tanımlandı bağlantı kurmak için daoyla 
 		{
-			this.personeldao=personaldao;//parametremiz interface çünkü gelecekte yapılacak değişikliklere daha uyumlu ve görece daha az doğrudan bağlı artık veritabanındaki classlara
+			this.personeldao=personeldao;//parametremiz interface çünkü gelecekte yapılacak değişikliklere daha uyumlu ve görece daha az doğrudan bağlı artık veritabanındaki classlara
 		}
 		public boolean login(String kullaniciadi,String sifre)//hata kontrolünü bu metod ile yapıp uı kısmına cevap göndereceğim
 		{
