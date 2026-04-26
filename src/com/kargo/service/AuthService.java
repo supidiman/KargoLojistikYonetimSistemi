@@ -6,9 +6,9 @@ import com.kargo.model.Personel;
 public class AuthService {
 	
 	
-		private final IPersonelDAO personaldao;//public classta bu veri private erişimi önlemek ve dğiştirilmesini önlemek amacıyla
+		private final IPersonelDAO personeldao;//public classta bu veri private erişimi önlemek ve dğiştirilmesini önlemek amacıyla
 		
-		public AuthService(IPersonelDAO personaldao)//cosnstructor tanımlandı bağlantı kurmak için daoyla 
+		public AuthService(IPersonelDAO personeldao)//cosnstructor tanımlandı bağlantı kurmak için daoyla 
 		{
 			this.personeldao=personaldao;//parametremiz interface çünkü gelecekte yapılacak değişikliklere daha uyumlu ve görece daha az doğrudan bağlı artık veritabanındaki classlara
 		}
