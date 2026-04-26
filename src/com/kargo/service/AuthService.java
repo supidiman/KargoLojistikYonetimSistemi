@@ -1,5 +1,5 @@
 package com.kargo.service;
-import com.kargo.dao.IPersonalDAO;
+import com.kargo.dao.IPersonelDAO;
 import com.kargo.model.Personel;
 
 
