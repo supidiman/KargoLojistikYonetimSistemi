@@ -30,7 +30,7 @@ public class RegisterFrame extends JFrame {
 		this.setSize(400,400);
 		this.setLayout(null);
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		label1=new JLabel("Adınız:");
 		label1.setBounds(30,30,100,30);
