@@ -8,9 +8,9 @@ import java.util.List;
 public class KargoService {
     private IGonderiDAO dao;
 
-    public KargoService() {
-        this.dao = new GonderiDAO(); 
-    }
+public KargoService(IGonderiDAO dao) {
+    this.dao = dao;
+}
 
     public void kargoEkle(Gonderi g) {
         double ucret = g.ucretHesapla(); 
