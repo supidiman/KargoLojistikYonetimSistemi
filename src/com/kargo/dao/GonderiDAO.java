@@ -55,8 +55,10 @@ public class GonderiDAO implements IGonderiDAO {
             pstmt.setString(1, g.getDurum().name());
             pstmt.setInt(2, g.getId());
             pstmt.executeUpdate();
-        } catch (SQLException e) { }
-    }
+    } catch (SQLException e) {
+    System.out.println("Güncelleme hatası: " + e.getMessage());
+    throw new RuntimeException("İşlem başarısız", e);
+}
 
     @Override
     public List<Gonderi> listele() {
