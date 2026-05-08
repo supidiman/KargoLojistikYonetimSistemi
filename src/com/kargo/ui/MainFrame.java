@@ -5,10 +5,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 
-/**
- * Uygulamanın ana yönetim merkezi olan çerçeve sınıfı.
- * Kargo ve Müşteri panellerini sekmeli bir yapıda barındırır.
- */
 public class MainFrame extends JFrame {
 
     public MainFrame() {
@@ -19,15 +15,12 @@ public class MainFrame extends JFrame {
 
         JTabbedPane sekmeler = new JTabbedPane();
 
-        // Panelleri birer kez oluşturuyoruz
         KargoPanel kargoPanel = new KargoPanel();
         MusteriPanel musteriPanel = new MusteriPanel();
 
-        // Sekmeleri ana iskelete ekliyoruz
         sekmeler.addTab("Kargo İşlemleri", kargoPanel);
         sekmeler.addTab("Müşteri İşlemleri", musteriPanel);
 
-        // Sekme değişim dinleyicisi
         sekmeler.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {

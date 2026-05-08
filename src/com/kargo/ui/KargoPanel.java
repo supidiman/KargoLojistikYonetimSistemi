@@ -8,12 +8,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
-/**
- * Furkan Tayyip Arfat sorumluluğundaki operasyonel modül. 
- * Kargo ekleme, listeleme ve durum güncelleme işlemlerini yönetir. [cite: 6, 141, 165]
- */
 public class KargoPanel extends JPanel {
-    private KargoService kargoService;
+    private static final long serialVersionUID = 1L;
+	private KargoService kargoService;
     private MusteriService musteriService;
     private JTable tablo;
     private DefaultTableModel model;
@@ -23,10 +20,9 @@ public class KargoPanel extends JPanel {
 
     public KargoPanel() {
         kargoService = new KargoService();
-        musteriService = new MusteriService();
+        musteriService = new MusteriService(new com.kargo.dao.MusteriDAO());
         setLayout(new BorderLayout(10, 10));
 
-        // --- FORM PANELİ (Üst Kısım) ---
         JPanel formPanel = new JPanel(new GridLayout(3, 4, 10, 10));
         formPanel.setBorder(BorderFactory.createTitledBorder("Kargo Operasyon Yönetimi"));
 
@@ -48,24 +44,20 @@ public class KargoPanel extends JPanel {
         formPanel.add(comboMusteri);
 
         JButton btnEkle = new JButton("Yeni Kargo Kaydet");
-        btnEkle.setBackground(new Color(144, 238, 144)); // Yeşil tonu
+        btnEkle.setBackground(new Color(144, 238, 144));
         formPanel.add(btnEkle);
 
         JButton btnGuncelle = new JButton("Durumu İlerlet");
-        btnGuncelle.setBackground(new Color(173, 216, 230)); // Mavi tonu
+        btnGuncelle.setBackground(new Color(173, 216, 230));
         formPanel.add(btnGuncelle);
 
         add(formPanel, BorderLayout.NORTH);
 
-        // --- TABLO PANELİ (Orta Kısım) ---
         String[] kolonlar = {"ID", "Müşteri", "Tip", "Ağırlık", "Mesafe", "Durum", "Toplam Ücret"};
         model = new DefaultTableModel(kolonlar, 0);
         tablo = new JTable(model);
         add(new JScrollPane(tablo), BorderLayout.CENTER);
 
-        // --- BUTON AKSİYONLARI ---
-
-        // Kargo Ekleme Butonu [cite: 141, 150]
         btnEkle.addActionListener(e -> {
             try {
                 double agirlik = Double.parseDouble(txtAgirlik.getText());
@@ -85,32 +77,26 @@ public class KargoPanel extends JPanel {
 
                 kargoService.kargoEkle(g);
                 tabloyuGuncelle();
-                JOptionPane.showMessageDialog(this, "Kargo başarıyla sisteme işlendi!");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Giriş değerlerini kontrol edin!");
             }
         });
 
-        // Durum Güncelleme Butonu (Furkan Tayyip Arfat - Operasyonel Mantık) 
         btnGuncelle.addActionListener(e -> {
             int seciliSatir = tablo.getSelectedRow();
             if (seciliSatir == -1) {
                 JOptionPane.showMessageDialog(this, "Lütfen tablodan bir kargo seçin!");
                 return;
             }
-
             int kargoId = (int) tablo.getValueAt(seciliSatir, 0);
             List<Gonderi> kargolar = kargoService.kargoListele();
-            
             for (Gonderi g : kargolar) {
                 if (g.getId() == kargoId) {
-                    // Durum döngüsü: SUBEDE -> DAGITIMDA -> TESLIM_EDILDI -> IADE [cite: 30, 134]
                     if (g.getDurum() == Durum.SUBEDE) g.setDurum(Durum.DAGITIMDA);
                     else if (g.getDurum() == Durum.DAGITIMDA) g.setDurum(Durum.TESLIM_EDILDI);
                     else if (g.getDurum() == Durum.TESLIM_EDILDI) g.setDurum(Durum.IADE);
                     else g.setDurum(Durum.SUBEDE);
-
-                    kargoService.kargoDurumGuncelle(g); // Backend seviyesinde işleme 
+                    kargoService.kargoDurumGuncelle(g);
                     tabloyuGuncelle();
                     break;
                 }
@@ -127,11 +113,7 @@ public class KargoPanel extends JPanel {
             Object[] satir = {
                 g.getId(), 
                 g.getMusteri() != null ? g.getMusteri().getAd() : "Bilinmiyor",
-                g.getClass().getSimpleName(), 
-                g.getAgirlik(), 
-                g.getMesafe(), 
-                g.getDurum(), 
-                g.ucretHesapla() + " TL" // Polymorphism ile dinamik ücret [cite: 113]
+                g.getClass().getSimpleName(), g.getAgirlik(), g.getMesafe(), g.getDurum(), g.ucretHesapla() + " TL"
             };
             model.addRow(satir);
         }
@@ -139,7 +121,7 @@ public class KargoPanel extends JPanel {
 
     public void musteriListesiniYukle() {
         comboMusteri.removeAllItems();
-        List<Musteri> musteriler = musteriService.Musterilerigetir();
+        List<Musteri> musteriler = musteriService.musterileriGetir();
         for (Musteri m : musteriler) {
             comboMusteri.addItem(m);
         }
