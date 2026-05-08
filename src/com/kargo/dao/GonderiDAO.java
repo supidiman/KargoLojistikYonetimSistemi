@@ -9,14 +9,15 @@ public class GonderiDAO implements IGonderiDAO {
 
     @Override
     public void ekle(Gonderi g) {
-        // DUZELTME: musteri_id eklendi, yoksa kargolarin sahibi belli olmaz
         String sql = "INSERT INTO gonderi (agirlik, mesafe, durum, kargo_tipi, gumruk_vergisi, musteri_id) VALUES (?, ?, ?, ?, ?, ?)";
+
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
             pstmt.setDouble(1, g.getAgirlik());
             pstmt.setDouble(2, g.getMesafe());
             pstmt.setString(3, g.getDurum().name());
-            
+
             if (g instanceof UluslararasiKargo) {
                 pstmt.setString(4, "ULUSLARARASI");
                 pstmt.setDouble(5, ((UluslararasiKargo) g).getGumrukVergisi());
@@ -27,10 +28,13 @@ public class GonderiDAO implements IGonderiDAO {
                 pstmt.setString(4, "STANDART");
                 pstmt.setDouble(5, 0.0);
             }
-            // Müşteri id veritabanina isleniyor
             pstmt.setInt(6, g.getMusteri() != null ? g.getMusteri().getId() : 0);
+
             pstmt.executeUpdate();
-        } catch (SQLException e) { System.out.println("Kargo ekleme hatasi: " + e.getMessage()); }
+
+        } catch (SQLException e) {
+            System.out.println("Kargo eklenirken veritabanı hatası: " + e.getMessage());
+        }
     }
 
     @Override
@@ -57,7 +61,6 @@ public class GonderiDAO implements IGonderiDAO {
     @Override
     public List<Gonderi> listele() {
         List<Gonderi> list = new ArrayList<>();
-        // DUZELTME: Kargolari cekerken musteri bilgilerini de ayni anda cekiyoruz ki UI cokmesin
         String sql = "SELECT g.*, m.ad as m_ad, m.tc as m_tc, m.telefon as m_tel, m.adres as m_adr " +
                      "FROM gonderi g LEFT JOIN musteri m ON g.musteri_id = m.id";
         try (Connection conn = DatabaseConnection.connect();
@@ -75,7 +78,6 @@ public class GonderiDAO implements IGonderiDAO {
                 g.setMesafe(rs.getDouble("mesafe"));
                 g.setDurum(Durum.valueOf(rs.getString("durum")));
                 
-                // Musteri nesnesi kargo icine yerlestiriliyor
                 Musteri m = new Musteri(rs.getInt("musteri_id"), rs.getString("m_ad"), rs.getString("m_tc"), rs.getString("m_tel"), rs.getString("m_adr"));
                 g.setMusteri(m);
                 
