@@ -6,87 +6,54 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MusteriDAO implements IMusteriDAO {
-    private Connection connection;
-
-    public MusteriDAO() {
-        this.connection = DatabaseConnection.connect();
-        tabloOlustur();
-    }
-
-    private void tabloOlustur() {
-        String sql = "CREATE TABLE IF NOT EXISTS Musteri ("
-                   + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                   + "ad TEXT, tc TEXT, telefon TEXT, adres TEXT)";
-        try {
-            connection.createStatement().execute(sql);
-        } catch (SQLException e) {
-            System.out.println("Müşteri tablosu hatası: " + e.getMessage());
-        }
-    }
 
     @Override
     public void ekle(Musteri m) {
-        String sql = "INSERT INTO Musteri(ad, tc, telefon, adres) VALUES(?,?,?,?)";
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+        String sql = "INSERT INTO musteri (ad, tc, telefon, adres) VALUES (?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, m.getAd());
             pstmt.setString(2, m.getTc());
             pstmt.setString(3, m.getTelefon());
             pstmt.setString(4, m.getAdres());
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Müşteri ekleme hatası: " + e.getMessage());
-        }
+        } catch (SQLException e) { System.out.println("Ekleme hatasi: " + e.getMessage()); }
     }
 
     @Override
-    public void sil(int id) {
-        String sql = "DELETE FROM Musteri WHERE id = ?";
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setInt(1, id);
+    public void sil(String tc) { // DUZELTME: TC uzerinden silme
+        String sql = "DELETE FROM musteri WHERE tc = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, tc);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Müşteri silme hatası: " + e.getMessage());
-        }
+        } catch (SQLException e) { System.out.println("Silme hatasi: " + e.getMessage()); }
     }
 
     @Override
-    public void guncelle(Musteri m) {
-        String sql = "UPDATE Musteri SET ad=?, tc=?, telefon=?, adres=? WHERE id=?";
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+    public void guncelle(Musteri m) { // DUZELTME: TC uzerinden bulup guncelleme
+        String sql = "UPDATE musteri SET ad = ?, telefon = ?, adres = ? WHERE tc = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, m.getAd());
-            pstmt.setString(2, m.getTc());
-            pstmt.setString(3, m.getTelefon());
-            pstmt.setString(4, m.getAdres());
-            pstmt.setInt(5, m.getId());
+            pstmt.setString(2, m.getTelefon());
+            pstmt.setString(3, m.getAdres());
+            pstmt.setString(4, m.getTc());
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Müşteri güncelleme hatası: " + e.getMessage());
-        }
+        } catch (SQLException e) { System.out.println("Guncelleme hatasi: " + e.getMessage()); }
     }
 
     @Override
     public List<Musteri> listele() {
-        List<Musteri> liste = new ArrayList<>();
-        String sql = "SELECT * FROM Musteri";
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+        List<Musteri> list = new ArrayList<>();
+        String sql = "SELECT * FROM musteri";
+        try (Connection conn = DatabaseConnection.connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                Musteri m = new Musteri(
-                    rs.getInt("id"),
-                    rs.getString("ad"),
-                    rs.getString("tc"),
-                    rs.getString("telefon"),
-                    rs.getString("adres")
-                );
-                liste.add(m);
+                list.add(new Musteri(rs.getInt("id"), rs.getString("ad"), rs.getString("tc"), rs.getString("telefon"), rs.getString("adres")));
             }
-        } catch (SQLException e) {
-            System.out.println("Müşteri listeleme hatası: " + e.getMessage());
-        }
-        return liste;
+        } catch (SQLException e) { System.out.println("Listeleme hatasi: " + e.getMessage()); }
+        return list;
     }
 }

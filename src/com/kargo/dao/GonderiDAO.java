@@ -6,112 +6,83 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GonderiDAO implements IGonderiDAO {
-    private Connection connection;
-
-    public GonderiDAO() {
-        this.connection = DatabaseConnection.connect();
-        tabloOlustur();
-    }
-
-    private void tabloOlustur() {
-        // OOP Polymorphism'i veritabanında tutabilmek için kargoTipi sütunu ekledik.
-        String sql = "CREATE TABLE IF NOT EXISTS Gonderi ("
-                   + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                   + "agirlik REAL, mesafe REAL, durum TEXT, "
-                   + "kargoTipi TEXT, gumrukVergisi REAL, musteriId INTEGER)";
-        try {
-            connection.createStatement().execute(sql);
-        } catch (SQLException e) {
-            System.out.println("Gönderi tablosu hatası: " + e.getMessage());
-        }
-    }
 
     @Override
     public void ekle(Gonderi g) {
-        String sql = "INSERT INTO Gonderi(agirlik, mesafe, durum, kargoTipi, gumrukVergisi, musteriId) VALUES(?,?,?,?,?,?)";
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+        // DUZELTME: musteri_id eklendi, yoksa kargolarin sahibi belli olmaz
+        String sql = "INSERT INTO gonderi (agirlik, mesafe, durum, kargo_tipi, gumruk_vergisi, musteri_id) VALUES (?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setDouble(1, g.getAgirlik());
             pstmt.setDouble(2, g.getMesafe());
             pstmt.setString(3, g.getDurum().name());
             
-            // Hangi kargo nesnesi geldiyse onun tipini kaydediyoruz (Polymorphism Database Binding)
-            if (g instanceof StandartKargo) {
-                pstmt.setString(4, "Standart");
-                pstmt.setDouble(5, 0.0);
-            } else if (g instanceof HizliKargo) {
-                pstmt.setString(4, "Hizli");
-                pstmt.setDouble(5, 0.0);
-            } else if (g instanceof UluslararasiKargo) {
-                pstmt.setString(4, "Uluslararasi");
+            if (g instanceof UluslararasiKargo) {
+                pstmt.setString(4, "ULUSLARARASI");
                 pstmt.setDouble(5, ((UluslararasiKargo) g).getGumrukVergisi());
+            } else if (g instanceof HizliKargo) {
+                pstmt.setString(4, "HIZLI");
+                pstmt.setDouble(5, 0.0);
+            } else {
+                pstmt.setString(4, "STANDART");
+                pstmt.setDouble(5, 0.0);
             }
-
-            pstmt.setInt(6, g.getMusteri().getId());
+            // Müşteri id veritabanina isleniyor
+            pstmt.setInt(6, g.getMusteri() != null ? g.getMusteri().getId() : 0);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Gönderi ekleme hatası: " + e.getMessage());
-        }
+        } catch (SQLException e) { System.out.println("Kargo ekleme hatasi: " + e.getMessage()); }
     }
 
     @Override
     public void sil(int id) {
-        String sql = "DELETE FROM Gonderi WHERE id = ?";
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+        String sql = "DELETE FROM gonderi WHERE id = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Gönderi silme hatası: " + e.getMessage());
-        }
+        } catch (SQLException e) { }
     }
 
     @Override
     public void guncelle(Gonderi g) {
-        String sql = "UPDATE Gonderi SET durum = ? WHERE id = ?";
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+        String sql = "UPDATE gonderi SET durum = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setString(1, g.getDurum().name());
             pstmt.setInt(2, g.getId());
             pstmt.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println("Gönderi güncelleme hatası: " + e.getMessage());
-        }
+        } catch (SQLException e) { }
     }
 
     @Override
     public List<Gonderi> listele() {
-        List<Gonderi> liste = new ArrayList<>();
-        // SQL JOIN ile Kargo ve Müşteri tablolarını birleştirip müşteri adını da alıyoruz
-        String sql = "SELECT Gonderi.*, Musteri.ad as musteriAd FROM Gonderi " +
-                     "LEFT JOIN Musteri ON Gonderi.musteriId = Musteri.id";
-        try {
-            Statement stmt = connection.createStatement();
-            ResultSet rs = stmt.executeQuery(sql);
+        List<Gonderi> list = new ArrayList<>();
+        // DUZELTME: Kargolari cekerken musteri bilgilerini de ayni anda cekiyoruz ki UI cokmesin
+        String sql = "SELECT g.*, m.ad as m_ad, m.tc as m_tc, m.telefon as m_tel, m.adres as m_adr " +
+                     "FROM gonderi g LEFT JOIN musteri m ON g.musteri_id = m.id";
+        try (Connection conn = DatabaseConnection.connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
-                String tip = rs.getString("kargoTipi");
-                Durum durum = Durum.valueOf(rs.getString("durum"));
+                Gonderi g;
+                String tip = rs.getString("kargo_tipi");
+                if ("ULUSLARARASI".equals(tip)) g = new UluslararasiKargo();
+                else if ("HIZLI".equals(tip)) g = new HizliKargo();
+                else g = new StandartKargo();
                 
-                // Müşteri nesnesini ID ve isimle oluşturuyoruz [cite: 25-28, 128-133]
-                Musteri m = new Musteri();
-                m.setId(rs.getInt("musteriId"));
-                m.setAd(rs.getString("musteriAd"));
-
-                Gonderi g = null;
-                // Polymorphism kullanarak nesneleri oluşturuyoruz [cite: 112, 113]
-                if (tip.equals("Standart")) {
-                    g = new StandartKargo(rs.getInt("id"), rs.getDouble("agirlik"), rs.getDouble("mesafe"), durum, m);
-                } else if (tip.equals("Hizli")) {
-                    g = new HizliKargo(rs.getInt("id"), rs.getDouble("agirlik"), rs.getDouble("mesafe"), durum, m);
-                } else if (tip.equals("Uluslararasi")) {
-                    g = new UluslararasiKargo(rs.getInt("id"), rs.getDouble("agirlik"), rs.getDouble("mesafe"), durum, m, rs.getDouble("gumrukVergisi"));
-                }
+                g.setId(rs.getInt("id"));
+                g.setAgirlik(rs.getDouble("agirlik"));
+                g.setMesafe(rs.getDouble("mesafe"));
+                g.setDurum(Durum.valueOf(rs.getString("durum")));
                 
-                if (g != null) liste.add(g);
+                // Musteri nesnesi kargo icine yerlestiriliyor
+                Musteri m = new Musteri(rs.getInt("musteri_id"), rs.getString("m_ad"), rs.getString("m_tc"), rs.getString("m_tel"), rs.getString("m_adr"));
+                g.setMusteri(m);
+                
+                if (g instanceof UluslararasiKargo) ((UluslararasiKargo) g).setGumrukVergisi(rs.getDouble("gumruk_vergisi"));
+                list.add(g);
             }
-        } catch (SQLException e) {
-            System.out.println("Gönderi listeleme hatası: " + e.getMessage());
-        }
-        return liste;
+        } catch (SQLException e) { System.out.println("Liste hatasi: " + e.getMessage()); }
+        return list;
     }
 }

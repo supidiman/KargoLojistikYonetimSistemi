@@ -7,50 +7,50 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class PersonelDAO implements IPersonelDAO {
-    private Connection connection;
-
-    public PersonelDAO() {
-        this.connection = DatabaseConnection.connect();
-        tabloOlustur();
-    }
-
-    private void tabloOlustur() {
-        String sql = "CREATE TABLE IF NOT EXISTS Personel ("
-                   + "id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                   + "kullaniciAdi TEXT NOT NULL, "
-                   + "sifre TEXT NOT NULL)";
-        try {
-            connection.createStatement().execute(sql);
-        } catch (SQLException e) {
-            System.out.println("Personel tablosu oluşturulamadı: " + e.getMessage());
-        }
-    }
 
     @Override
-    public boolean personelDogrula(String kadi, String sifre) {
-        String sql = "SELECT * FROM Personel WHERE kullaniciAdi = ? AND sifre = ?";
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
-            pstmt.setString(1, kadi);
+    public boolean personelDogrula(String kullaniciAdi, String sifre) {
+        // Veritabanında bu kullanıcı adı ve şifreye sahip biri var mı diye bakıyoruz
+        String sql = "SELECT * FROM personel WHERE kullaniciAdi = ? AND sifre = ?";
+        
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, kullaniciAdi);
             pstmt.setString(2, sifre);
-            ResultSet rs = pstmt.executeQuery();
-            return rs.next(); // Eğer kayıt eşleşiyorsa true döner
+            
+            try (ResultSet rs = pstmt.executeQuery()) {
+                // Eğer ResultSet'te bir kayıt varsa (rs.next() true dönerse) giriş başarılıdır
+                if (rs.next()) {
+                    System.out.println("Giriş Başarılı. Hoşgeldin: " + kullaniciAdi);
+                    return true;
+                }
+            }
         } catch (SQLException e) {
-            System.out.println("Giriş doğrulama hatası: " + e.getMessage());
-            return false;
+            System.out.println("Personel doğrulanırken veritabanı hatası: " + e.getMessage());
         }
+        
+        // Kayıt bulunamadıysa veya hata olduysa false dön
+        System.out.println("Hatalı kullanıcı adı veya şifre!");
+        return false;
     }
 
     @Override
     public void ekle(Personel p) {
-        String sql = "INSERT INTO Personel(kullaniciAdi, sifre) VALUES(?, ?)";
-        try {
-            PreparedStatement pstmt = connection.prepareStatement(sql);
+        String sql = "INSERT INTO personel (kullaniciAdi, sifre) VALUES (?, ?)";
+        
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            // Not: getKullaniciAdi ve getSifre metotlarını Can Personel sınıfına ekleyecek
             pstmt.setString(1, p.getKullaniciAdi());
             pstmt.setString(2, p.getSifre());
             pstmt.executeUpdate();
+            
+            System.out.println("Yeni personel kaydedildi: " + p.getKullaniciAdi());
+            
         } catch (SQLException e) {
-            System.out.println("Personel ekleme hatası: " + e.getMessage());
+            System.out.println("Personel eklenirken veritabanı hatası: " + e.getMessage());
         }
     }
 }
