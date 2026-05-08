@@ -1,0 +1,16 @@
+# Eclipse ayar dosyaları
+.metadata/
+.settings/
+.project
+.classpath
+
+# Derlenmiş dosyalar
+bin/
+*.class
+
+# Veritabanı dosyası (Hoca kendi çalıştırdığında oluşmalı)
+*.db
+
+# Mac/Windows sistem dosyaları
+.DS_Store
+Thumbs.db
