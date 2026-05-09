@@ -35,7 +35,7 @@ public class KargoPanel extends JPanel {
         formPanel.add(txtMesafe);
 
         formPanel.add(new JLabel("  Kargo Tipi:"));
-        comboTip = new JComboBox<>(new String[]{"Standart", "Hizli", "Uluslararasi"});
+        comboTip = new JComboBox<>(new String[]{"Standart", "Hızlı", "Uluslararası"});
         formPanel.add(comboTip);
 
         formPanel.add(new JLabel("  Gönderen Müşteri:"));
@@ -71,8 +71,8 @@ public class KargoPanel extends JPanel {
                 }
 
                 Gonderi g;
-                if (tip.equals("Hizli")) g = new HizliKargo(0, agirlik, mesafe, Durum.SUBEDE, secilenMusteri);
-                else if (tip.equals("Uluslararasi")) g = new UluslararasiKargo(0, agirlik, mesafe, Durum.SUBEDE, secilenMusteri, 50.0);
+                if (tip.equals("Hızlı")) g = new HizliKargo(0, agirlik, mesafe, Durum.SUBEDE, secilenMusteri);
+                else if (tip.equals("Uluslararası")) g = new UluslararasiKargo(0, agirlik, mesafe, Durum.SUBEDE, secilenMusteri, 50.0);
                 else g = new StandartKargo(0, agirlik, mesafe, Durum.SUBEDE, secilenMusteri);
 
                 kargoService.kargoEkle(g);
