@@ -31,31 +31,49 @@ Bu sistemin temel amacı:
 KargoLojistikYonetimSistemi
 │
 ├── src/
-│   ├── database/
-│   │   ├── DBConnection.java
-│   │   └── DAO/
-│   │
-│   ├── model/
-│   │   ├── Kullanici.java
-│   │   ├── Kargo.java
-│   │   ├── Personel.java
-│   │   └── Musteri.java
-│   │
-│   ├── service/
-│   │   ├── KullaniciService.java
-│   │   ├── KargoService.java
-│   │   └── OperasyonService.java
-│   │
-│   ├── ui/
-│   │   ├── LoginPanel.java
-│   │   ├── Dashboard.java
-│   │   └── AdminPanel.java
-│   │
-│   └── Main.java
+│   └── com/
+│       └── kargo/
+│           │
+│           ├── model/
+│           │   ├── Gonderi.java
+│           │   ├── StandartKargo.java
+│           │   ├── HizliKargo.java
+│           │   ├── UluslararasiKargo.java
+│           │   ├── Musteri.java
+│           │   ├── Personel.java
+│           │   ├── Ucretlendirme.java
+│           │   └── Durum.java
+│           │
+│           ├── dao/
+│           │   ├── DatabaseConnection.java
+│           │   ├── IGonderiDAO.java
+│           │   ├── IMusteriDAO.java
+│           │   ├── IPersonelDAO.java
+│           │   ├── GonderiDAO.java
+│           │   ├── MusteriDAO.java
+│           │   └── PersonelDAO.java
+│           │
+│           ├── service/
+│           │   ├── KargoService.java
+│           │   ├── MusteriService.java
+│           │   └── AuthService.java
+│           │
+│           ├── ui/
+│           │   ├── MainFrame.java
+│           │   ├── LoginFrame.java
+│           │   ├── RegisterFrame.java
+│           │   ├── KargoPanel.java
+│           │   ├── MusteriPanel.java
+│           │   ├── ConsumerListInternalFrame.java
+│           │   └── RegisterInternalFrame.java
+│           │
+│           └── Main.java
 │
-├── assets/
-├── README.md
-└── pom.xml
+├── lib/
+│   └── sqlite-jdbc-3.53.1.0.jar
+│
+├── kargo.db
+└── README.md
 ```
 
 ---
