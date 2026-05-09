@@ -22,10 +22,10 @@ public class ConsumerListInternalFrame extends JInternalFrame
         this.setLayout(new java.awt.BorderLayout());
         
         tabloformat = new DefaultTableModel();
-        tabloformat.addColumn("ISIM");
-        tabloformat.addColumn("KIMLIK");
-        tabloformat.addColumn("TELEFON");
-        tabloformat.addColumn("ADRES");
+        tabloformat.addColumn("Ad Soyad");
+        tabloformat.addColumn("TC Kimlik No");
+        tabloformat.addColumn("Telefon");
+        tabloformat.addColumn("Adres");
         
         consumertable = new JTable(tabloformat);
         this.add(new JScrollPane(consumertable));
@@ -50,7 +50,7 @@ public class ConsumerListInternalFrame extends JInternalFrame
         }
         catch(Exception ex) 
         {
-            JOptionPane.showMessageDialog(this, "Kayıtlar yüklenemedi:" + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Müşteri listesi yüklenemedi: " + ex.getMessage());
         }
     }
 }
