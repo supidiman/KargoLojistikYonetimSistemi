@@ -26,19 +26,19 @@ public class RegisterFrame extends JFrame {
 	private AuthService authservice = new AuthService(new PersonelDAO());
 	
 	public RegisterFrame() {
-		this.setTitle("KAYIT EKRANI");
+		this.setTitle("Personel Kayıt Ekranı");
 		this.setSize(400,400);
 		this.setLayout(null);
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
-		label1=new JLabel("Adınız:");
+		label1=new JLabel("Kullanıcı Adı:");
 		label1.setBounds(30,30,100,30);
 		this.add(label1);
 		ad =new JTextField();
 		ad.setBounds(150, 30, 100, 50);
 		this.add(ad);
-		label2=new JLabel("sifreniz:");
+		label2=new JLabel("Şifre:");
 		label2.setBounds(60, 60, 100,30);
 		this.add(label2);
 		sifre=new JPasswordField();
@@ -56,7 +56,7 @@ public class RegisterFrame extends JFrame {
 			}
 		});
 		
-		kaydet=new JButton("KAYDET");
+		kaydet=new JButton("Kaydet");
 		kaydet.setBounds(180,210,100,50);
 		this.add(kaydet);
 		
@@ -69,12 +69,12 @@ public class RegisterFrame extends JFrame {
 				personel.setSifre(sifreText);
 				try {
 					authservice.register(personel);
-					JOptionPane.showMessageDialog(null, "KAYIT BASARILI");
+					JOptionPane.showMessageDialog(null, "Kayıt başarıyla tamamlandı. Giriş yapabilirsiniz.");
 					dispose();
 					new LoginFrame().setVisible(true);
 				}
 				catch(Exception ex) {
-					JOptionPane.showMessageDialog(null,"HATA: "+ex.getMessage());
+					JOptionPane.showMessageDialog(null,"Kayıt sırasında bir hata oluştu: " + ex.getMessage());
 				}
 			}
 		});
