@@ -44,7 +44,9 @@ public class GonderiDAO implements IGonderiDAO {
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             pstmt.setInt(1, id);
             pstmt.executeUpdate();
-        } catch (SQLException e) { }
+        } catch (SQLException e)  {
+            System.out.println("Kargo silinirken veritabanı hatası: " + e.getMessage());
+        }
     }
 
     @Override
@@ -87,7 +89,7 @@ public class GonderiDAO implements IGonderiDAO {
                 if (g instanceof UluslararasiKargo) ((UluslararasiKargo) g).setGumrukVergisi(rs.getDouble("gumruk_vergisi"));
                 list.add(g);
             }
-        } catch (SQLException e) { System.out.println("Liste hatasi: " + e.getMessage()); }
+        } catch (SQLException e) { System.out.println("Liste hatası: " + e.getMessage()); }
         return list;
     }
 }
