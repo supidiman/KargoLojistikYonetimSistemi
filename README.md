@@ -1,52 +1,331 @@
-# 📦 Kargo Lojistik Yönetim Sistemi (V1.0)
+🚚 Kargo Lojistik Yönetim Sistemi
 
-Gazi Üniversitesi Mühendislik Fakültesi bünyesinde, **Nesne Yönelimli Programlama** prensiplerine sadık kalınarak geliştirilmiş kurumsal bir kargo yönetim otomasyonudur.
+Modern lojistik operasyonlarını dijital ortamda yönetmek amacıyla geliştirilen kapsamlı bir Kargo ve Lojistik Yönetim Sistemi.
 
----
 
-## 🏗️ Mimari Yapı (N-Tier Architecture)
-Proje, bakımı kolay ve ölçeklenebilir olması için **Çok Katmanlı Mimari** kullanılarak tasarlanmıştır:
 
-1.  **UI (User Interface) Katmanı:** `javax.swing` kullanılarak oluşturulan, kullanıcı etkileşimini yöneten katman.
-2.  **Service (Business) Katmanı:** İş kurallarının (ücret hesaplama, durum kontrolü) işlendiği katman.
-3.  **DAO (Data Access Object) Katmanı:** SQLite veritabanı ile uygulama arasındaki veri köprüsü.
-4.  **Model Katmanı:** Kargo, Müşteri ve Gönderi gibi temel nesne yapıları.
+Bu proje; kullanıcı yönetimi, operasyon süreçleri, veri tabanı yönetimi ve nesne yönelimli yazılım mimarisi prensipleri temel alınarak geliştirilmiştir.
 
----
+🎯 Proje Amacı
 
-## 🛠️ Teknik Derinlik ve OOP Uygulamaları
+Bu sistemin temel amacı:
 
-### 1. Polimorfizm (Çok Biçimlilik)
-Sistemde kargo türlerine göre ücret hesaplama mantığı dinamiktir. `Gonderi` sınıfındaki `ucretHesapla()` metodu, alt sınıflarda (Hizli, Standart, Uluslararasi) ezilerek (**Override**) her tip için farklı katsayılarla çalışır.
 
-### 2. Kalıtım ve Soyutlama (Inheritance & Abstraction)
-- `Gonderi` sınıfı `abstract` olarak tanımlanarak temel kargo özelliklerini alt sınıflara aktarır.
-- Ortak özellikler (ağırlık, mesafe, müşteri) tek merkezden yönetilir.
 
-### 3. Veritabanı Yönetimi
-- **SQLite JDBC:** Hafif ve taşınabilir bir veritabanı çözümü entegre edilmiştir.
-- **İlişkisel Veri:** Müşteri ve Kargo verileri `Foreign Key` mantığıyla birbirine bağlıdır.
 
----
 
-## 📑 Ekran Görüntüleri ve İşlevler
-* **Müşteri Yönetimi:** CRUD (Ekle, Sil, Güncelle, Listele) işlemleri.
-* **Kargo Operasyonları:** Otomatik ücret hesaplama ve kargo durum simülasyonu.
-* **Durum Takibi:** `SUBEDE` -> `DAGITIMDA` -> `TESLIM_EDILDI` -> `IADE` döngüsünün yönetimi.
+Kargo operasyonlarını dijitalleştirmek
 
----
 
-## 🚀 Kurulum Adımları
-1.  **Depoyu Klonlayın:** `git clone https://github.com/supidiman/KargoLojistikYonetimSistemi.git`
-2.  **Kütüphaneyi Bağlayın:** `sqlite-jdbc-3.53.1.0.jar` dosyasını `Referenced Libraries` altına ekleyin.
-3.  **Başlatın:** `com.kargo.main.Main.java` dosyasını `Run as Java Application` diyerek çalıştırın.
 
----
+Kullanıcı ve personel yönetimini kolaylaştırmak
 
-## 👥 Proje Ekibi
-* **Furkan Tayyip Arfat** (21118080742) - Lead Developer & Backend Architect
-* **Yusuf Kağan** - UI Designer & Database Management
 
----
 
-> **Not:** Bu proje eğitim amaçlı geliştirilmiş olup, Gazi Üniversitesi Bilgisayar Mühendisliği müfredatına uygundur.
+Sipariş ve sevkiyat süreçlerini merkezi şekilde yönetmek
+
+
+
+Modüler ve sürdürülebilir bir yazılım mimarisi oluşturmak
+
+
+
+OOP prensiplerine uygun ölçeklenebilir bir yapı sunmaktır
+
+🛠️ Kullanılan Teknolojiler
+
+Java
+
+Java Swing
+
+JDBC
+
+MySQL / SQL
+
+DAO Design Pattern
+
+Object-Oriented Programming (OOP)
+
+📂 Proje Mimarisi
+
+
+
+KargoLojistikYonetimSistemi
+
+│
+
+├── src/
+
+│ ├── database/
+
+│ │ ├── DBConnection.java
+
+│ │ └── DAO/
+
+│ │
+
+│ ├── model/
+
+│ │ ├── Kullanici.java
+
+│ │ ├── Kargo.java
+
+│ │ ├── Personel.java
+
+│ │ └── Musteri.java
+
+│ │
+
+│ ├── service/
+
+│ │ ├── KullaniciService.java
+
+│ │ ├── KargoService.java
+
+│ │ └── OperasyonService.java
+
+│ │
+
+│ ├── ui/
+
+│ │ ├── LoginPanel.java
+
+│ │ ├── Dashboard.java
+
+│ │ └── AdminPanel.java
+
+│ │
+
+│ └── Main.java
+
+│
+
+├── assets/
+
+├── README.md
+
+└── pom.xml
+
+
+
+⚙️ Sistem Özellikleri
+
+✅ Kullanıcı giriş ve doğrulama sistemi
+
+
+
+✅ Kargo oluşturma ve takip işlemleri
+
+
+
+✅ Personel ve müşteri yönetimi
+
+
+
+✅ Veritabanı bağlantısı ve CRUD işlemleri
+
+
+
+✅ DAO mimarisi ile veri erişim katmanı
+
+
+
+✅ Modüler ve sürdürülebilir kod yapısı
+
+
+
+✅ Nesne yönelimli programlama prensiplerine uygun tasarım
+
+🧩 Yazılım Mimarisi
+
+Projede katmanlı yazılım mimarisi kullanılmıştır:
+
+
+
+UI Layer → Kullanıcı arayüzü işlemleri
+
+Service Layer → İş mantığı yönetimi
+
+DAO Layer → Veritabanı erişim işlemleri
+
+Model Layer → Veri nesneleri
+
+Bu yapı sayesinde:
+
+
+
+
+
+Kod tekrarının azaltılması
+
+
+
+Yönetilebilirlik
+
+
+
+Test edilebilirlik
+
+
+
+Ölçeklenebilirlik
+
+hedeflenmiştir.
+
+🚀 Kurulum
+
+Projeyi çalıştırmak için:
+
+
+
+
+
+git clone https://github.com/supidiman/KargoLojistikYonetimSistemi.git
+
+
+
+
+
+Ardından IDE üzerinden açıp gerekli veritabanı bağlantı ayarlarını düzenleyebilirsiniz.
+
+🗄️ Veritabanı
+
+Sistem JDBC bağlantısı kullanarak SQL tabanlı bir veritabanı ile haberleşmektedir.
+
+Örnek tablolar:
+
+
+
+
+
+Kullanicilar
+
+
+
+Kargolar
+
+
+
+Personeller
+
+
+
+Musteriler
+
+
+
+Sevkiyatlar
+
+📌 Gelecek Geliştirmeler
+
+
+
+Gerçek zamanlı kargo takip sistemi
+
+
+
+QR / Barkod entegrasyonu
+
+
+
+REST API desteği
+
+
+
+Yetkilendirme sistemi geliştirmeleri
+
+
+
+Mobil uygulama desteği
+
+
+
+Raporlama ve analiz modülleri
+
+📖 Yazılım Tasarım Yaklaşımları
+
+Projede aşağıdaki yazılım geliştirme yaklaşımları uygulanmıştır:
+
+
+
+
+
+Object-Oriented Programming (OOP)
+
+
+
+Encapsulation
+
+
+
+Abstraction
+
+
+
+Inheritance
+
+
+
+Polymorphism
+
+
+
+DAO Design Pattern
+
+
+
+Layered Architecture
+
+🤝 Katkıda Bulunma
+
+Projeye katkıda bulunmak için:
+
+
+
+
+
+Fork oluşturun
+
+
+
+Yeni branch açın
+
+
+
+Değişikliklerinizi commit edin
+
+
+
+Pull Request gönderin
+
+📄 Lisans
+
+Bu proje eğitim ve akademik kullanım amacıyla geliştirilmiştir.
+
+👥 Proje Ekibi (Grup 24)
+
+Kasım Can Yıldırım
+
+OOP Mimari ve Core Logic
+
+
+
+Yunus Emre Sarıbacak
+
+Veritabanı Mimari ve DAO
+
+
+
+Yusuf Kağan Kızılpınar
+
+Kullanıcı Yönetimi ve Arayüz Entegrasyonu
+
+
+
+Furkan Tayyip Arfat
+
+Operasyonel Modüller ve Backend Mantığı
+
+🔗 GitHub Repository
+
+https://github.com/supidiman/KargoLojistikYonetimSistemi
