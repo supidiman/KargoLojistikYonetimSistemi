@@ -20,9 +20,8 @@ Bu sistemin temel amacı:
 - Java
 - Java Swing
 - JDBC
-- MySQL / SQL
+- SQLite
 - DAO Design Pattern
-- Object-Oriented Programming (OOP)
 
 ---
 
