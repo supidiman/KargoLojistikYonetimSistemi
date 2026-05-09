@@ -115,7 +115,7 @@ hedeflenmiştir.
 ### 1. Projeyi İndirin
 
 ```bash
-git clone [https://github.com/supidiman/KargoLojistikYonetimSistemi.git](https://github.com/supidiman/KargoLojistikYonetimSistemi.git)
+git clone https://github.com/supidiman/KargoLojistikYonetimSistemi.git
 ```
 
 GitHub sayfasındaki yeşil **Code → Download ZIP** seçeneğiyle de indirebilirsiniz.
@@ -131,7 +131,7 @@ GitHub sayfasındaki yeşil **Code → Download ZIP** seçeneğiyle de indirebil
 ### 4. Çalıştırın
 `src → com → kargo → Main.java` dosyasını açıp sağ üstteki ▶ **Run** butonuna basın.
 
-> `kargo.db` veritabanı ilk çalıştırmada otomatik olarak oluşturulur, ek bir ayar gerekmez.
+`kargo.db` veritabanı ilk çalıştırmada otomatik olarak oluşturulur, ek bir ayar gerekmez.
 
 ---
 
