@@ -23,13 +23,13 @@ public class LoginFrame extends JFrame {
 	
 	public LoginFrame()
 	{
-		this.setTitle("GİRİS EKRANI");
+		this.setTitle("Kargo Yönetim Sistemi");
 		this.setSize(400,300);
 		this.setLayout(null);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
 
-		etiket = new JLabel("adı :");
+		etiket = new JLabel("Kullanıcı Adı:");
 		etiket.setBounds(50,50,100,30);
 		this.add(etiket);
 
@@ -37,7 +37,7 @@ public class LoginFrame extends JFrame {
 		ad.setBounds(150,50,150,30);
 		this.add(ad);
 
-		etiket2 = new JLabel("sifre :");
+		etiket2 = new JLabel("Şifre:");
 		etiket2.setBounds(50,100,100,30);
 		this.add(etiket2);
 
@@ -45,7 +45,7 @@ public class LoginFrame extends JFrame {
 		sifre.setBounds(150,100,150,30);
 		this.add(sifre);
 
-		buttongir = new JButton("GİRİS");
+		buttongir = new JButton("Giriş Yap");
 		buttongir.setBounds(150,150,100,30);
 		this.add(buttongir);
 
@@ -62,13 +62,13 @@ public class LoginFrame extends JFrame {
 				boolean BasardikMi = authservice.login(isim, sifreText);
 				if(BasardikMi == true) 
 				{
-					JOptionPane.showMessageDialog(LoginFrame.this, "Basarılı Giris");
+					JOptionPane.showMessageDialog(LoginFrame.this, "Giriş başarılı. Hoş geldiniz!");
 					dispose();
 					MainFrame anaEkran = new MainFrame();
 					anaEkran.setVisible(true);
 				}
 				else {
-					JOptionPane.showMessageDialog(LoginFrame.this, "HAY AKSİ BASARISIZ TEŞEBBÜS");
+					JOptionPane.showMessageDialog(LoginFrame.this, "Kullanıcı adı veya şifre hatalı. Lütfen tekrar deneyin.");
 				}
 			}
 		});
