@@ -111,16 +111,34 @@ hedeflenmiştir.
 ---
 
 # 🚀 Kurulum
+```
+## Kurulum ve Çalıştırma
 
-Projeyi çalıştırmak için:
-
-```bash
+### 1. Projeyi İndirin
+```
 git clone https://github.com/supidiman/KargoLojistikYonetimSistemi.git
 ```
-
-Ardından IDE üzerinden açıp gerekli veritabanı bağlantı ayarlarını düzenleyebilirsiniz.
+GitHub sayfasındaki yeşil **Code → Download ZIP** seçeneğiyle de indirebilirsiniz.
 
 ---
+
+### 2. IntelliJ IDEA ile Açın
+**File → Open** seçeneğiyle indirilen `KargoLojistikYonetimSistemi` klasörünü açın.
+
+---
+
+### 3. JAR Dosyasını Ekleyin
+1. **File → Project Structure → Modules → Dependencies** sekmesine gelin.
+2. **+** butonuna tıklayın → **JARs or Directories** seçin.
+3. `lib/sqlite-jdbc-3.53.1.0.jar` dosyasını seçin → **Apply → OK**.
+
+---
+
+### 4. Çalıştırın
+`src → com → kargo → Main.java` dosyasını açıp sağ üstteki ▶ **Run** butonuna basın.
+
+> `kargo.db` veritabanı ilk çalıştırmada otomatik olarak oluşturulur, ek bir ayar gerekmez.
+```
 
 # 🗄️ Veritabanı
 
