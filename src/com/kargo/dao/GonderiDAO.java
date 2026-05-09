@@ -58,6 +58,7 @@ public class GonderiDAO implements IGonderiDAO {
     } catch (SQLException e) {
     System.out.println("Güncelleme hatası: " + e.getMessage());
     throw new RuntimeException("İşlem başarısız", e);
+    }
 }
 
     @Override
