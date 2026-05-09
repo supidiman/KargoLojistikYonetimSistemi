@@ -23,7 +23,7 @@ public class MusteriPanel extends JPanel {
 		this.add(ana, BorderLayout.CENTER);
 		ana.setLayout(null);
 		
-		butonekle = new JButton("MUSTERI EKLE");
+		butonekle = new JButton("Yeni Müşteri Ekle");
 		butonekle.setBounds(20,20,150,40);
 		ana.add(butonekle);
 		
@@ -36,7 +36,7 @@ public class MusteriPanel extends JPanel {
 			}
 		});
 		
-		butonlistele=new JButton("LISTELE");
+		butonlistele=new JButton("Müşterileri Listele");
 		butonlistele.setBounds(180,20,150,40);
 		ana.add(butonlistele);
 		
