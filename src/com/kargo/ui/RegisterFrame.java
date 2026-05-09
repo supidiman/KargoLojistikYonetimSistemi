@@ -33,20 +33,20 @@ public class RegisterFrame extends JFrame {
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		label1=new JLabel("Kullanıcı Adı:");
-		label1.setBounds(30,30,100,30);
+		label1.setBounds(40, 60, 110, 25);
 		this.add(label1);
 		ad =new JTextField();
-		ad.setBounds(150, 30, 100, 50);
+		ad.setBounds(160, 60, 150, 25);
 		this.add(ad);
 		label2=new JLabel("Şifre:");
-		label2.setBounds(60, 60, 100,30);
+		label2.setBounds(40, 100, 110, 25);
 		this.add(label2);
 		sifre=new JPasswordField();
-		sifre.setBounds(160,60,100,30);
+		sifre.setBounds(160, 100, 150, 25);
 		this.add(sifre);
 		
-		iptal=new JButton("İPTAL");
-		iptal.setBounds(60,210,100,50);
+		iptal=new JButton("İptal");
+		iptal.setBounds(60, 180, 100, 40);
 		this.add(iptal);
 		
 		iptal.addActionListener(new ActionListener() {
@@ -57,7 +57,7 @@ public class RegisterFrame extends JFrame {
 		});
 		
 		kaydet=new JButton("Kaydet");
-		kaydet.setBounds(180,210,100,50);
+		kaydet.setBounds(180, 180, 100, 40);
 		this.add(kaydet);
 		
 		kaydet.addActionListener(new ActionListener() {
